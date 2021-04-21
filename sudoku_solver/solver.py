@@ -10,6 +10,7 @@ Sudoku_solver can solve easy sudokus
   # 654837291389214756172965483896451327237689145541723869918346572723598614465172938
 
 """
+from collections import Counter
 
 
 class Solver:
@@ -21,6 +22,7 @@ class Solver:
         self.sudoku = sudoku
         self._organize_sudoku()
         self._solving()
+        self._verify()
 
     def _check_input(self, sudoku: str) -> None:
         """Check if the inputed sudoku is in the good format
@@ -102,6 +104,30 @@ class Solver:
             if len_s == len("".join(sum(sudoku_matrice, []))):
                 raise Exception("Can't find a solution")
         self.solved_sudoku = sudoku_matrice
+
+    def _verify(self):
+        """Verify the solution
+
+        Returns:
+            bool: True if the solution is valid
+        """
+        sudoku_matrice = self.solved_sudoku
+        for i in range(9):
+            c = Counter(sudoku_matrice[i])
+            if max(c.values()) != 1:
+                raise Exception("Can't find a solution")
+
+        for j in range(9):
+            c = Counter([sudoku_matrice[i][j] for i in range(9)])
+            if max(c.values()) != 1:
+                raise Exception("Can't find a solution")
+
+        for i in range(3):
+            for j in range(3):
+                c = Counter([sudoku_matrice[i*3+ii][j*3+jj] for ii in range(3) for jj in range(3)])
+                if max(c.values()) != 1:
+                    raise Exception("Can't find a solution")
+
 
 s = Solver('600837001089004700102000400000450020030609005040000860908006070700098010005100930')
 print(s.get_solution())
