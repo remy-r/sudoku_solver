@@ -127,7 +127,3 @@ class Solver:
                 c = Counter([sudoku_matrice[i*3+ii][j*3+jj] for ii in range(3) for jj in range(3)])
                 if max(c.values()) != 1:
                     raise Exception("Can't find a solution")
-
-
-s = Solver('600837001089004700102000400000450020030609005040000860908006070700098010005100930')
-print(s.get_solution())
